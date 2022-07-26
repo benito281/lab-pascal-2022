@@ -1,0 +1,246 @@
+ESCENARIO 7
+
+La empresa AUDIT.COM necesita realizar estadísticas sobre la captura de datos de la red de su
+cliente NO_RULES SRL. Para ello cuenta con un archivo donde se han almacenado registros de
+todos los paquetes del tráfico de la red desde las 08:00 hasta las 15:00hs de los días 4, 5 y 6 de
+Julio del 2022
+
+LAN_TRAFFIC: Ordenado por Prot_Red, Prot_Transp
+
+
+Laboratorio de Pascal TEMA 7 
+
+Accion NO_RULES SRL. es
+    Ambiente
+
+        FECHA = REGISTRO
+            Año= 2022
+            Mes= 07
+            Dia:(4...6)
+        FinRegistro
+
+        HORA = REGISTRO
+            Hora:(8...15)
+            Min:(0...59)
+            Seg:(0...59)
+        FinRegistro
+
+
+        LAN_TRAFFIC = REGISTRO
+            Prot_Red:  (1..3)
+            Prot_Transp:(1..2)
+            Puerto_Origen:(1..65535)
+            Puerto_Dest:(1..65535)
+            Horario: HORA
+            Dia: FECHA
+            IPOrigen:AN(15)
+            IPDestino:AN(15)
+        FinRegistro
+
+        Traffic: Ordenado por Prot_Red, Prot_Transp
+        regTraffic: LAN_TRAFFIC
+Redweb, Redftp, RedSmtp, Redtot
+Trweb, Trftp, TrSmtp, Trtot: numerico
+	guardored:(1…3)
+	guardotransp:(1…2)
+
+Procedimiento Inicializar() es 
+	ABRIR E/(Traffic);  LEER(Traffic, regTraffic)
+	Redweb1:=0
+Redftp1:=0
+RedSmtp1:=0
+Redtot1 :=0
+Redweb2:=0
+Redftp2:=0
+RedSmtp2 :=0
+Redtot2:=0
+Redweb3:=0
+Redftp3:=0
+RedSmtp3:=0
+Redtot3:=0  
+Trweb1:=0
+Trftp1:=0
+TrSmtp1:=0
+Trtot1:=0
+Trweb2:=0
+Trftp2:=0
+TrSmtp2:=0
+Trtot2:=0
+guardored:= regTraffic.Prot_Red
+guardotransp:= regTraffic.Prot_Transp
+
+fin proc
+
+
+
+
+
+
+
+
+
+
+
+proc corte_transp es 
+esc (“Protocolo Transporte:”, guardadotransp)
+esc(“Puerto Destino “web”: ”, Trweb)
+esc(“Puerto Destino “ftp”: ”, Trftp)
+esc(“Puerto Destino “smtp”: ”, Trsmtp)
+esc(“Total enviados: ”,Trtot)
+
+Redweb:= redweb + Trweb
+Redftp:= redftp + trftp
+Redsmtp:= redsmtp + trsmtp 
+Redtot:= Redtot + Trtot
+Trweb:=0
+Trftp:=0
+Trsmtp:=0
+Trtot:=0 
+guargadotransp = regTraffic.prot_transp
+fin proc
+proc corte_red es 
+corte_transp()
+esc (“Protocolo Red:”, guardadored)
+esc(“Puerto Destino “web”: ”, Redweb)
+esc(“Puerto Destino “ftp”: ”, Redftp)
+esc(“Puerto Destino “smtp”: ”, Redsmtp)
+esc(“Total enviados: ”,Redtot)
+
+
+fin proc
+
+procedimiento tratoregistro() es
+	Si regTraffic.Prot_Red <> guardored entonces
+		corte_red()
+	Sino
+		Si regTraffic.Prot_Transp <> guardo transp entonces
+			corte_transp()
+		fin si 
+fin si 
+
+ Segun regTraffic.Puerto_Dest hacer
+	80: TrWeb:= TrWeb + 1; TrTotal:= TrWeb
+	21: TrFtp:= TrFtp + 1;  TrTotal:= TrFtp
+	25: Trsmtp:= Trsmtp + 1;  TrTotal:= Trsmtp
+fin segun 
+			
+finproc
+
+proceso
+ Inicializar()
+
+FinAccion
+
+
+
+
+
+Laboratorio de Pascal TEMA 7 
+
+Accion NO_RULES SRL. es
+    Ambiente
+
+        FECHA = REGISTRO
+            Año= 2022
+            Mes= 07
+            Dia:(4...6)
+        FinRegistro
+
+        HORA = REGISTRO
+            Hora:(8...15)
+            Min:(0...59)
+            Seg:(0...59)
+        FinRegistro
+
+
+        LAN_TRAFFIC = REGISTRO
+            Prot_Red:  (1..3)
+            Prot_Transp:(1..2)
+            Puerto_Origen:(1..65535)
+            Puerto_Dest:(1..65535)
+            Horario: HORA
+            Dia: FECHA
+            IPOrigen:AN(15)
+            IPDestino:AN(15)
+        FinRegistro
+
+        Traffic: Ordenado por Prot_Red, Prot_Transp
+        regTraffic: LAN_TRAFFIC
+Redweb, Redftp, RedSmtp,Trweb, Trftp, TrSmtp, totweb, totftp, totsmtp: numerico
+	guardored:(1…3)
+	guardotransp:(1…2)
+
+Procedimiento Inicializar() es 
+	ABRIR E/(Traffic);  LEER(Traffic, regTraffic)
+	Redweb:=0
+Redftp:=0
+RedSmtp:=0
+Redtot :=0
+Trweb:=0
+Trftp:=0
+TrSmtp:=0
+Trtot:=0
+guardored:= regTraffic.Prot_Red
+guardotransp:= regTraffic.Prot_Transp
+
+fin proc
+
+
+
+
+
+
+proc corte_transp es 
+esc (“Protocolo Transporte:”, guardadotransp)
+esc(“Puerto Destino “web”: ”, Trweb)
+esc(“Puerto Destino “ftp”: ”, Trftp)
+esc(“Puerto Destino “smtp”: ”, Trsmtp)
+esc(“Total enviados: ”,Trtot)
+
+Redweb:= redweb + Trweb
+Redftp:= redftp + trftp
+Redsmtp:= redsmtp + trsmtp 
+Redtot:= Redtot + Trtot
+Trweb:=0
+Trftp:=0
+Trsmtp:=0
+Trtot:=0 
+guargadotransp = regTraffic.prot_transp
+fin proc
+proc corte_red es 
+corte_transp()
+esc (“Protocolo Red:”, guardadored)
+esc(“Puerto Destino “web”: ”, Redweb)
+esc(“Puerto Destino “ftp”: ”, Redftp)
+esc(“Puerto Destino “smtp”: ”, Redsmtp)
+esc(“Total enviados: ”,Redtot)
+
+
+fin proc
+
+procedimiento tratorCorte() es
+	Si regTraffic.Prot_Red <> guardored entonces
+		corte_red()
+	Sino
+		Si regTraffic.Prot_Transp <> guardo transp entonces
+			corte_transp()
+		fin si 
+fin si 
+	finProcedimiento
+
+	Procedimiento TratoRegistro() es
+ Segun regTraffic.Puerto_Dest hacer
+	80: TrWeb:= TrWeb + 1; TrTotal:= TrToal + 1
+	21: TrFtp:= TrFtp + 1;  TrTotal:= TrTotal +1
+	25: Trsmtp:= Trsmtp + 1;  TrTotal:= TrTotal +1 
+fin segun 
+	LEER(Traffic,regTraffic)	
+finProcedimiento
+
+proceso
+ Inicializar()
+Mientras NFDA(Traffic) hacer
+	tratoregistro()
+Fin mientras
+	Cerrar(Traffic);
+FinAccion
